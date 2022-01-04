@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css">
+    <link rel="shortcut icon" href="{% static 'img/MainIcon.png' %}" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <title>Simple Mail</title>
+</head>
+
+<body>
+        <header class="header">
+            {% include 'navbar.html' %}
+        </header>
+
+        <section class="section">
+            <div class="content-base">
+                {% if request.user.is_authenticated %}
+                    <div class="sidebar">
+                        <ul>
+                            <li class="new-mail" onclick="location.href='{% url "send-mail" %}';" style="cursor: pointer;">
+                                <h3>New Mail <span class="new-plus">+</span></h3>
+                            </li>
+
+                            <li class="received-mails" onclick="location.href='{% url "all-received-mails" %}';">
+                                <div class="received-mails__general">
+                                    <h3>
+                                        Rec. Mails <span class="received-mails__counter">{{ received_mails_counter }}</span>
+                                    </h3>
+                                    {% if unvisited_mails_counter %}
+                                       <small>new <span class="unvisited-mails__counter">{{ unvisited_mails_counter }}</span></small>
+                                    {% endif %}
+                                </div>
+                            </li>
+
+                            <li class="sent-mails" onclick="location.href='{% url "all-sent-mails" %}';" >
+                                <h3>Sent Mails <span class="sent-mails__counter">{{ sent_mails_counter }}</span></h3>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <div class="main-block">
+                    {% block content %}
+
+                    {% endblock %}
+                </div>
+            </div>
+        </section>
+
+</body>
+</html>

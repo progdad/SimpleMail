@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="LogoutForm">
+        <h1 style="color: #ff7f50; margin: 20px auto;">Are you sure you want to logout ?</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Logout" name="Logout" class="LogoutForm__button" style="color: #ff7f50;">
+            <input type="submit" value="Go Back" name="Back" class="LogoutForm__button-back">
+        </form>
+    </div>
+{% endblock %}

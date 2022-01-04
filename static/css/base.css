@@ -1,0 +1,617 @@
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: #303133;
+            font-size: 20px;
+        }
+
+        .header {
+            width: 100%;
+            height: 100px;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            background: #262729;
+            border-bottom: 2px solid #ff7f50;
+            z-index: 100;
+        }
+
+        a {
+            color: #ff7f50;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        a:hover {
+            opacity: 0.6;
+        }
+
+        textarea {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .section {
+            width: 100%;
+        }
+
+        .content-base {
+            width: 80%;
+            margin: 200px auto 50px;
+            display: flex;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+
+        .sidebar {
+            margin-top: 30px;
+        }
+
+        .sidebar li {
+            margin: 10px 0;
+            padding: 20px;
+            border: 2px solid #ff7f50;
+            border-radius: 10px;
+            display: block;
+            color: #000;
+            align-items: center;
+            transition: background 0.3s, color 0.3s;
+            background: #262729;
+            cursor: pointer;
+        }
+
+        .new-mail {
+            margin-top: 10px;
+        }
+
+        .sidebar li:hover {
+            background: #403133;
+            color: #ff7f50;
+        }
+
+        .sidebar li h3, .sidebar li small {
+            display: flex;
+            min-width: 175px;
+        }
+
+        .sidebar li span {
+            margin-left: auto;
+            color: #ff7f50;
+        }
+
+        .sidebar li h3 {
+            font-weight: 400;
+            margin: 5px;
+        }
+
+        .received-mails__general small {
+            margin: 5px;
+        }
+
+        .unvisited-mails__counter {
+            margin-right: 5px;
+        }
+
+        .main-block {
+            margin: 0 auto;
+            max-width: 1000px;
+        }
+
+        /**/
+        /**/
+        /**/
+        /* Styles for received_mails.html and sent_mails.html */
+        /**/
+        /**/
+        /**/
+
+            h1.mails-h1 {
+                font-size: 35px;
+                margin-top: -50px;
+                text-align: center;
+                color: #ecc9c7;
+            }
+
+            .mail-block {
+                max-height: 200px;
+                padding: 40px auto;
+                max-width: 800px;
+                padding: 10px 150px;
+                text-align: center;
+                background-color: #262729;
+                border: 1px solid #ff7f50;
+                border-radius: 30px;
+                margin-bottom: 15px;
+                transition: background 0.3s;
+            }
+
+            .mail-block:hover {
+                background: #303133;
+            }
+
+            .mail-block h4, .mail-block p, .mail-block small {
+                margin: 10px;
+                min-width: 250px;
+            }
+
+            .mail-block h4 {
+                font-size: 25px;
+                color: #ff7f50;
+                font-weight: 500;
+            }
+
+            .chat-mate__info span {
+                color: darkgrey;
+            }
+
+            .mail-body__div {
+
+                display: inline-flex;
+                align-items: center;
+                padding-left: auto;
+            }
+
+            .chat-mate__info a {
+                margin-left: 10px;
+            }
+
+            .profile-link {
+                display: flex;
+                align-items: center;
+                cursor: default;
+                margin-left: 10px;
+            }
+
+            .profile-pic {
+                margin-left: 5px;
+                width: 35px;
+                height: 35px;
+                border: 2px solid #ff7f50;
+                border-radius: 50%;
+            }
+
+        /**/
+        /**/
+        /**/
+        /* Styles for pagination in pages where mails are */
+        /**/
+        /**/
+        /**/
+
+        div.pagination{
+            margin: 100px auto;
+            max-width: 800px;
+        }
+
+        .pagination ul {
+            display: flex;
+        }
+
+        .fuck-im-tired-of-front {
+            margin: auto;
+            display: flex;
+        }
+
+        .pagination a {
+            margin-left: 15px;
+        }
+
+        .pagination a:hover {
+            opacity: 1;
+        }
+
+        .pagination li {
+            border-radius: 50%;
+            border: 2px solid #ff7f50;
+            padding-top: 12px;
+            margin-left: 0;
+            width: 50px;
+            height: 38px;
+            text-align: center;
+            background: #262729;
+            cursor: pointer;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .pagination li:hover {
+            opacity: 1;
+            background: #303133;
+            box-shadow: 3px 3px 1px #262729;
+        }
+
+        li.page-num-selected {
+            color: #ecb993;
+            background: #262729;
+            border: none;
+            cursor: default;
+        }
+
+        li.page-num-selected:hover {
+            background: #262729;
+            box-shadow: none;
+        }
+
+        /**/
+        /**/
+        /**/
+        /* Styles for my_profile.html and user_profile.html */
+        /**/
+        /**/
+        /**/
+
+            .profile-h1 {
+                color: #ecc9c7;
+                text-align: center;
+                margin: -30px 0 50px 0;
+            }
+
+            .my-personal__info {
+                padding: 50px 100px;
+                border: 1px solid #ff7f50;
+                border-radius: 30px;
+                background: #262729;
+                max-width: 800px;
+            }
+
+            .pic-and-meta {
+                display: flex;
+                align-items: center;
+                margin: 20px;
+            }
+
+            .profile-avatar-block {
+                width: 285px;
+                align-items: center;
+                display: grid;
+            }
+
+            .profile-img {
+                display: block;
+                width: 200px;
+                height: 200px;
+                border: 3px solid #ff7f50;
+                border-radius: 50%;
+            }
+
+            .avatar-button__label {
+                margin-left: 13px;
+                font-size: 19px;
+                color: #ff7f50;
+                padding-top: 10px;
+                text-align: center;
+                display: inline-block;
+                width: 180px;
+                height: 35px;
+                background-color: #403133;
+                border: 2px solid #ff7f50;
+                border-radius: 100px;
+                transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+            }
+
+            .avatar-button__label:hover {
+                background-color: #262729;
+                color: #ecc9c7;
+                border-color: #ecc9c7;
+            }
+
+            .profile-meta {
+                display: block;
+                color: #ff7f50;
+            }
+
+            .date-joined {
+                font-size: 22px
+            }
+
+            .form-separator {
+                margin: 50px auto;
+                color: #ff7f50;
+            }
+
+            .contact-and-initials__list-li {
+                display: flex;
+                align-items: center;
+                color: #ff7f50;
+                margin-bottom: 20px;
+            }
+
+            .user-data__span {
+                text-align: left;
+                padding: 10px 15px 5px;
+                font-size: 20px;
+                margin-left: auto;
+                margin-right: 10px;
+                width: 350px;
+                height: 30px;
+                color: #ff7f50;
+                background-color: #403133;
+                border: 2px solid #ff7f50;
+                border-radius: 10px;
+                font-family: 'Montserrat', sans-serif;
+            }
+
+            .biography *  {
+                display: block;
+                }
+
+            .biography-header {
+                text-align: center;
+                margin: 35px 0 20px;
+                color: #ff7f50;
+            }
+
+            .biography textarea {
+                width: 580px;
+                height: 300px;
+                resize: none;
+                color: #ff7f50;
+                background: #353133;
+                border: 2px solid #ff7f50;
+                border-radius: 30px;
+                padding: 20px;
+                font-size: 18px;
+            }
+
+            .biography input {
+                color: #ff7f50;
+                background: #403133;
+                margin: 20px auto 0;
+                width: 150px;
+                height: 50px;
+                cursor: pointer;
+                font-family: 'Montserrat', sans-serif;
+                transition: background-color 0.3s, box-shadow 0.3s;
+                border: 2px solid #ff7f50;
+                border-radius: 10px;
+                font-weight: 500;
+                font-size: 22px;
+            }
+
+            .biography input:hover {
+                background-color: #ecc9c7;
+                box-shadow: 3px 3px #ff7f50;
+            }
+
+            .profile-message {
+                color: #ff7f50;
+            }
+
+            small.new-mail{
+                color: #ff7f50;
+                padding: 5px 10px 5px 5px;
+                margin-left: 10px;
+                background-color: #503133;
+                border-radius: 5px;
+            }
+
+            /* */
+            /* */
+            /* */
+            /* Mail Form View */
+            /* */
+            /* */
+            /* */
+
+
+        .ViewMail * {
+            color: #ff7f50;
+        }
+
+        .mail-form__h1 {
+
+            margin-top: -50px;
+            font-size: 35px;
+            text-align: center;
+            color: #ecc9c7;
+        }
+
+        .MailForm, .ViewMail, .LogoutForm, .RegistrationForm {
+            padding: 50px 100px;
+            border: 2px solid #ff7f50;
+            border-radius: 30px;
+            background: #262729;
+            max-width: 700px;
+            align-items: center;
+            text-align: center;
+        }
+
+        .LogoutForm {
+            margin-top: 50px;
+            padding: 25px 50px;
+        }
+
+        .MailForm * {
+            color: #ff7f50;
+            display: block;
+        }
+
+        .InputMail {
+            margin: 0 auto 25px;
+            font-size: 22px;
+            font-weight: 400;
+            color: #ff7f50;
+            padding-left: 10px;
+            width: 400px;
+            height: 45px;
+            background-color: #403133;
+            border: 2px solid #ff7f50;
+            border-radius: 15px;
+        }
+
+        .MailForm__hr {
+            color: #ff7f50;
+            width: 80%;
+            margin: 40px auto 25px;
+        }
+
+        .MailForm-h3 {
+            color: #ff7f50;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .InputMail__body {
+            text-align: top;
+            font-family: 'Montserrat', sans-serif;
+            padding: 15px 15px;
+            margin-bottom: 35px;
+            color: #ff7f50;
+            background-color: #403133;
+            border: 1px solid #ff7f50;
+            border-radius: 20px;
+            width: 500px;
+            height: 300px;
+            resize: none;
+        }
+
+        .MailForm__button-send, .MailForm__button-back1, .LogoutForm__button-back {
+            color: #ecc9c7;
+        }
+
+        .MailForm__button-back, .MailForm__button-send, .MailForm__button-back1, .MailForm__button-delete, .LogoutForm__button, .LogoutForm__button-back, .error_button {
+            background: #403133;
+            margin: 0 15px 0;
+            display: inline-block;
+            width: 120px;
+            height: 40px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: color 0.3s, background-color 0.3s, box-shadow 0.3s;
+            border: 2px solid #ff7f50;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .MailForm__button-back:hover, .MailForm__button-delete:hover, .LogoutForm__button:hover, .error_button:hover {
+            background-color: #703133;
+            box-shadow: 3px 3px #ff7f50;
+        }
+
+        .MailForm__button-send:hover, .MailForm__button-back1:hover, .LogoutForm__button-back:hover {
+            color: #ff7f50;
+            background-color: #ecc9c7;
+            box-shadow: 3px 3px #ff7f50;
+        }
+
+        .view-mail__block {
+            border: 1px solid #ff7f50;
+            padding: 10px 10px 15px 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .view-mail__block-title, .mail-view__profile-link {
+            color: #ff7f60;
+            display: inline-block;
+            margin: 10px auto 0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: #403133;
+        }
+
+        .mail-view__profile-link {
+            color: #ff7f50;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .view-mail__block textarea {
+            margin: 15px 15px 0 15px;
+            padding: 15px;
+            width: 400px;
+            color: #ff7f50;
+            background-color: #403133;
+            border: none;
+            height: 200px;
+            border-radius: 15px;
+            resize: none;
+
+        }
+
+        .mail-view__profile-pic {
+            margin-left: 5px;
+            width: 35x;
+            height: 35px;
+            border: 2px solid #ff7f50;
+            border-radius: 50%;
+        }
+
+        /* */
+        /* */
+        /* */
+        /* Register and login */
+        /* */
+        /* */
+        /* */
+
+        .reg-form__list {
+            list-style-type: circle;
+        }
+
+        .reg-form__li {
+            margin-left: 15px;
+            text-align: left;
+        }
+
+        .reg-form__form{
+            margin: 25px auto;
+            max-width: 500px;
+            color: #ff7f50;
+            border: 1px solid #ff7f50;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            padding: 30px;
+            background-color: #363133;
+        }
+
+        .reg-form__form * {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .reg-form__input {
+            padding: 10px 15px 5px;
+            font-size: 20px;
+            margin: 0 auto 15px;
+            width: 350px;
+            height: 30px;
+            color: #ff7f50;
+            background-color: #403133;
+            border: 1.5px solid #ff7f50;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .reg-form__button {
+            color: #ff7f50;
+            background: #403133;
+            margin: 20px 15px 0;
+            display: inline-block;
+            width: 120px;
+            height: 40px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: color 0.3s, background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+            border: 2px solid #ff7f50;
+            border-radius: 10px;
+            font-weight: 600;
+
+        }
+
+        .reg-form__button:hover {
+            color: #ff7f50;
+            background-color: #ecc9c7;
+            box-shadow: 3px 3px #ff7f50;
+        }

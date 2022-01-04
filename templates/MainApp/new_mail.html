@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+
+    <h1 class="mail-form__h1">Write a mail :)</h1>
+
+        {% if error %}
+            <div class="error" style="color: #ff7f50; margin-bottom: 15px; text-align: left;">
+                {{ error }}
+            </div>
+        {% endif %}
+
+    <form method="POST" class="MailForm"> {% csrf_token %}
+        
+        {% if form %}
+            <input class="InputMail" type="text" name="to_user" placeholder="The username of recipient...">
+            <input class="InputMail" type="text" name="title" {% if form.title %} value="{{ form.title }}" {% else %} placeholder="Title of your mail..." {% endif %}>
+            <hr class="MailForm__hr">
+            <h3 class="MailForm-h3">Your Message</h3>
+            {% if form.body %}
+                <textarea class="InputMail__body" name="body">{{ form.body }}</textarea>
+            {% else %}
+                <textarea class="InputMail__body" name="body" placeholder="Body message"></textarea>
+            {% endif %}
+
+        {% else %}
+            <input class="InputMail" type="text" name="to_user" placeholder="The username of recipient...">
+            <input class="InputMail" type="text" name="title" placeholder="Title of your mail...">
+            <hr class="MailForm__hr">
+            <h3 class="MailForm-h3">Your Message</h3>
+            <br>
+            <textarea class="InputMail__body" name="body" placeholder="Message body"></textarea>
+
+        {% endif %}
+
+        <input class="MailForm__button-send" type="submit" name="send" value="Send">
+        <input class="MailForm__button-back" type="submit" name="back" value="Back">
+
+    </form>
+    {% endblock %}

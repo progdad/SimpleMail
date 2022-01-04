@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+
+                    <div class="my-personal__info">
+                        <div class="pic-and-meta">
+                            <div class="profile-avatar-block">
+                                <img for="avatar_id" class="profile-img" src="{{ profile.avatar.url }}">
+                            </div>
+
+                            <div class="profile-meta">
+                                <h2 style="font-size: 30px; color: #ff7f50;">{{ profile.user }}</h2>
+                                <h3 class="date-joined">Since {{ profile.joined }}</h3>
+                                <h4>{{ sent }} mail{% if sent != 1 %}s{% endif %} were sent</h4>
+                                <h4>{{ received }} mail{% if received != 1 %}s{% endif %} were received</h4>
+                            </div>
+                        </div>
+
+                        {% if profile.name or profile.surname or profile.email or profile.bio %}
+                        <hr class="form-separator">
+
+                        <div class="input_info">
+                            {% if profile.name or profile.surname or profile.email %}
+                                <div class="contact-and-initials">
+                                    <h3 class="contact-and-initials__h3" style="color: #ecc9c7; text-align: center; margin-bottom: 30px;">
+                                        {% if not profile.name and not profile.surname and profile.email %}
+                                            User email
+                                        {% elif profile.name and profile.surname and profile.email %}
+                                            User initials and email
+                                        {% else %}
+                                            User initials
+                                        {% endif %}
+                                    </h3>
+                                    <ul class="contact-and-initials__list">
+                                        {% if profile.name %}
+                                            <li class="contact-and-initials__list-li">
+                                                <span>User name >>></span>
+                                                <span class="user-data__span">{{ profile.name }}</span>
+                                            </li>
+                                        {% endif %}
+                                        {% if profile.surname %}
+                                            <li class="contact-and-initials__list-li">
+                                                <span>User surname   >>></span>
+                                                <span class="user-data__span">{{ profile.surname }}</span>
+                                            </li>
+                                        {% endif %}
+                                        {% if profile.email %}
+                                            <li class="contact-and-initials__list-li">
+                                                <span>User email >>></span>
+                                                <span class="user-data__span">{{ profile.email }}</span>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            {% if profile.bio %}
+                                <div class="biography">
+                                    <span class="biography-header">User about himself</span>
+                                    <textarea readonly>{{ profile.bio }}</textarea>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+    {% endblock %}

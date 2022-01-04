@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        {% if not mails %}
+            <div style="text-align: center;">
+                {% if searched %}
+                    <h1 class="mails-h1">No sent mails matched "{{ searched }}" search filter !</h1>
+                {% else %}
+                    <h1 class="mails-h1">You don't have any sent mails :/</h1>
+                    <h3 style="color: #ecc9c7;">Write your first mail <a href="{% url 'send-mail' %}">HERE</a> :)</h3>
+                {% endif %}
+            </div>
+        {% else %}
+            <h1 class="mails-h1">
+                Sent mails
+
+                {% if mails.paginator.page_range|length > 1 %}
+                    page {{ mails.number }}
+                {% endif %}
+            </h1>
+
+            {% for mail, image in mails %}
+                <div class="mail-block" onclick="location.href='{% url "sent-mail" mail.id %}';" style="cursor: pointer;">
+                    <h4>
+                        {{ mail.title|truncatewords:25 }}
+                    </h4>
+
+                    <div class="mail-body">
+                        <small class="chat-mate__info">
+                            <span>You sent it {{ mail.render_created }}</span>
+                        </small>
+                        <br>
+                        <hr style="width: 60%; margin: 20px auto 10px; color: darkgrey;">
+                        <div class="mail-body__div">
+                            <h5 style="margin: 0; color: #ecc9c7;">Receiver is</h5>
+                            <a href="{% url 'profile' mail.to_user_inf %}" class="profile-link">
+                                @{{ mail.to_user_inf }}
+                                <img src="{{ image.url }}" class="profile-pic">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% include 'pagination.html' %}
+        {% endif %}
+{% endblock %}

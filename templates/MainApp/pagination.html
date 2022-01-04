@@ -1,0 +1,45 @@
+            {% if mails.has_other_pages %}
+                    <div class="pagination">
+                        <ul>
+                            <div class="fuck-im-tired-of-front">
+                                {% if mails.has_previous %}
+                                    {% if searched %}
+                                        <a href="?page={{ mails.previous_page_number }}&searched={{ searched }}">
+                                    {% else %}
+                                        <a href="?page={{ mails.previous_page_number }}">
+                                    {% endif %}
+                                            <li class="page-num">
+                                                <
+                                            </li>
+                                        </a>
+                                {% endif %}
+
+                                {% for page in mails.paginator.page_range %}
+                                    {% if mails.number == page %}
+                                        <li class="page-num-selected" style="margin-left: 15px;">{{ page }}</li>
+                                    {% elif page >= mails.number|add:-2 and page <= mails.number|add:2 %}
+                                        {% if searched %}
+                                        <a href="?page={{ page }}&searched={{ searched }}">
+                                        {% else %}
+                                        <a href="?page={{ page }}">
+                                        {% endif %}
+                                            <li class="page-num">{{ page }}</li>
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if mails.has_next %}
+                                    {% if searched %}
+                                        <a href="?page={{ mails.next_page_number }}&searched={{ searched }}">
+                                    {% else %}
+                                        <a href="?page={{ mails.next_page_number }}">
+                                    {% endif %}
+                                            <li class="page-num">
+                                                >
+                                            </li>
+                                        </a>
+                                {% endif %}
+                            </div>
+                        </ul>
+                    </div>
+            {% endif %}

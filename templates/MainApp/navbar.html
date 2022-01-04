@@ -1,0 +1,133 @@
+{% load static %}
+
+        <style>
+
+            .container {
+                background: #262729;
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            .list {
+                margin: 0;
+            }
+
+            .list, .user-meta {
+                align-items: center;
+                display: flex;
+            }
+
+            .list li {
+                margin-right: 40px;
+                list-style-type: none;
+            }
+
+            .LOGO {
+                max-width: 160px;
+                max-height: 90px;
+            }
+
+            form.search-mails {
+                align-items: center;
+                margin: 0 auto;
+                display: flex;
+                border: 2px solid #ff7f50;
+                background-color: #262729;
+                width: 300px;
+                border-radius: 10px;
+                height: 50px;
+            }
+
+            .input-search {
+                outline: none;
+                height: 45px;
+                font-size: 23px;
+                max-width: 240px;
+                border: none;
+                background-color: #262729;
+                border-radius: 20px;
+                color: #ff7f50;
+                padding-left: 15px;
+            }
+
+            .input-submit {
+                margin-left: auto;
+                height: 52px;
+                background-color: #ff7f50;
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+                border: none;
+                cursor: pointer;
+            }
+
+            .search-mails img {
+                width: 25px;
+                height: 25px;
+            }
+
+            .my-profile {
+                display:grid;
+                text-align: center;
+            }
+
+            .my-profile-img {
+                border: 2px solid #ff7f50;
+                border-radius: 50%;
+                margin: auto;
+                width: 46px;
+                height: 46px;
+            }
+
+            .navbar-logout {
+                width: 60px;
+                height: 60px;
+                transition: opacity 0.2s;
+            }
+
+            .my-profile:hover, .navbar-logout:hover {
+                opacity: 0.5;
+            }
+
+            .user-meta__navbar {
+                display: flex;
+                margin-left: auto;
+            }
+        </style>
+
+<div class="container">
+    <ul class="list">
+        <li>
+            <a href="{% url 'home' %}"><img src="{% static 'img/LOGO.png' %}" class="LOGO"></a>
+        </li>
+
+        {% if flag %}
+            <form method="GET" class="search-mails">
+                {% if searched %}
+                    <input type="text" class="input-search" name="searched" value="{{ searched }}">
+                    <button type="submit" class="input-submit" name="close"><img src="{% static 'img/Close.png' %}"></button>
+                {% else %}
+                    <input type="text" class="input-search" name="searched" placeholder="Search Mails...">
+                    <button type="submit" class="input-submit" name="submit" ><img src="{% static 'img/Search.png' %}"></button>
+                {% endif %}
+            </form>
+        {% endif %}
+
+        <div class="user-meta__navbar">
+            {% if request.user.is_authenticated %}
+            <li>
+                <a class="my-profile" href="{% url 'my-profile' %}" style="color: #ff7f50;"><img class="my-profile-img" src="{{ host_avatar.url }}" alt="Profile">{{ request.user }}</a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}"><img class="navbar-logout" src="{% static 'img/Logout.png' %}" alt="Logout"></a>
+            </li>
+            {% else %}
+            <li>
+                <a href="{% url 'login' %}">LOGIN</a>
+            </li>
+            <li>
+                <a href="{% url 'signup' %}">SIGNUP</a>
+            </li>
+            {% endif %}
+        </div>
+    </ul>
+</div>

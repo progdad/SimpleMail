@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 style="color: #ecc9c7; text-align: center; margin-top: -20px;">Registration</h1>
+    <div class="RegistrationForm">
+
+        {% if register_error %}
+            <h4 style="margin: -10px auto 30px; color: #ecc9c7">{{ register_error }}</h4>
+        {% endif %}
+
+        <div class="reg-form__rules" style="color: #ff7f50; border: 1px solid #ff7f50; border-radius: 10px; margin-bottom: 30px; padding: 30px; background-color: #363133;">
+            <h3 style="color: #ff7f50; margin-top: 0;">You have to follow the next rules</h3>
+            <hr style="color: #ff7f50; width: 40%; margin: 15px auto;">
+
+            <ul class="reg-form__list">
+                <li class="reg-form__li">Unique username</li>
+                <li class="reg-form__li">The length of username can be only from 4 to 24 characters</li>
+                <li class="reg-form__li">The username must contain only letters and numbers</li>
+                <li class="reg-form__li">First symbol of username must be a letter</li>
+                <li class="reg-form__li">The password length can be only from 8 to 64 characters</li>
+                <li class="reg-form__li"><strong>Usernames are case-sensitive:</strong> <small>JohnAdams != johnAdams</small></li>
+            </ul>
+        </div>
+
+        <form method="POST" class="reg-form__form"> {% csrf_token %}
+            <input class="reg-form__input" type="text" name="username" {% if username %} value="{{ username }}" {% else %} placeholder="Set unique username" {% endif %}>
+            <input class="reg-form__input" type="password" name="password1" {% if password1 %} value="{{ password1 }}" {% else %} placeholder="Set password" {% endif %}>
+            <input class="reg-form__input" type="password" name="password2" {% if password2 %} value="{{ password2 }}" {% else %} placeholder="Confirm the password" {% endif %}>
+
+            <input class="reg-form__button" type="submit" value="Register">
+        </form>
+
+        <div>
+            <p style="margin: 50px auto 0; color: #ff7f50;">Already have an account >>> <a href="{% url 'login' %}" style="color: #ecc9c7;">Login</a></p>
+        </div>
+    </div>
+
+{% endblock %}

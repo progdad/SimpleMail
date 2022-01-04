@@ -1,0 +1,56 @@
+<div class="site-error">
+    <h1 style="max-width: 30%;">{% if exception %}{{ exception }}{% else %}Error{% endif %}</h1>
+    <p>Some error occurred just now :/<br>If you are sure that's an application error, write me a message to halychprogramming@gmail.com</a></p>
+
+        <a href="{% url 'my-profile' %}">
+            <button class="error_button" type="submit" name="back" value="Back">Back</button>
+        </a>
+</div>
+
+<style>
+    .site-error {
+        margin: 25px auto;
+        max-width: 1000px;
+        color: #ff7f50;
+        border: 1px solid #ff7f50;
+        border-radius: 30px;
+        margin-bottom: 30px;
+        padding: 30px 60px;
+        background-color: #262729;
+        align-items: center;
+    }
+
+    .site-error h1, .site-error p {
+        background-color: #363133;
+        display: block;
+        text-align: center;
+        border: 1px solid #ff7f50;
+        border-radius: 10px;
+        padding: 15px 30px;
+        margin: 0px auto 10px;
+    }
+
+    .site-error a:hover {
+        opacity: 1;
+    }
+
+    .error_button {
+        color: #ff7f50;
+        background: #403133;
+        margin: 0 auto 0;
+        display: block;
+        width: 120px;
+        height: 40px;
+        cursor: pointer;
+        font-family: 'Montserrat', sans-serif;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        border: 2px solid #ff7f50;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .error_button:hover {
+        background-color: #ecc9c7;
+        box-shadow: 3px 3px #ff7f50;
+    }
+</style>

@@ -1,0 +1,6 @@
+env/
+*.pyc
+.idea/
+MainApp/migrations/*
+!MainApp/migrations/__init__.py
+media/profiles/*/

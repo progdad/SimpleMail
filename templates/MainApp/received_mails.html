@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+        {% if not mails %}
+            <h1 class="mails-h1">
+                {% if searched %}
+                    No received mails matched "{{ searched }}" search filter !
+                {% else %}
+                    You don't have any received mails :/
+                {% endif %}
+            </h1>
+        {% else %}
+           <h1 class="mails-h1">
+                Received mails
+
+                {% if mails.paginator.page_range|length > 1 %}
+                    page {{ mails.number }}
+                {% endif %}
+            </h1>
+            {% for mail, image in mails %}
+                <div class="mail-block" onclick="location.href='{% url "received-mail" mail.id %}';" style="cursor: pointer;">
+                    <h4>
+                        {% if mail.unvisited %}
+                            <small class="new-mail">*new</small>
+                        {% endif %}
+                        {{ mail.title|truncatewords:25 }}
+                    </h4>
+
+                    <div class="mail-body">
+                        <small class="chat-mate__info">
+                            <span>You received it {{ mail.render_created }}</span>
+                        </small>
+                        <br>
+                        <hr style="width: 60%; margin: 20px auto 10px; color: darkgrey;">
+                        <div class="mail-body__div">
+                            <h5 style="margin: 0; color: #ecc9c7;">Sender is</h5>
+                            <a href="{% url 'profile' mail.from_user_inf %}" class="profile-link">
+                                @{{ mail.from_user_inf }}
+                                <img src="{{ image.url }}" class="profile-pic">
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+
+            {% include 'pagination.html' %}
+        {% endif %}
+    {% endblock %}

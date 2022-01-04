@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 style="color: #ecc9c7; text-align: center; margin-top: -20px;">Login</h1>
+    <div class="RegistrationForm">
+
+        {% if login_error %}
+            <h4 style="margin: -10px auto 30px; color: #ecc9c7">{{ login_error }}</h4>
+        {% endif %}
+
+        <div class="reg-form__rules" style="color: #ff7f50; border: 1px solid #ff7f50; border-radius: 10px; margin-bottom: 30px; padding: 30px; background-color: #363133;">
+            <h3 style="color: #ff7f50; margin-top: 0;">Remember</h3>
+            <hr style="color: #ff7f50; width: 40%; margin: 15px auto;">
+
+            <ul class="reg-form__list">
+                <li class="reg-form__li"><strong>Usernames are case-sensitive:</strong> <small>JohnAdams != johnAdams</small></li>
+                <li class="reg-form__li">The creator is lazy, so that if you forgot your password, this is no ways to solve it :)</li>
+            </ul>
+        </div>
+
+        <form method="POST" class="reg-form__form"> {% csrf_token %}
+            <input class="reg-form__input" type="text" name="username" {% if username %} value="{{ username }}" {% else %} placeholder="Your username..." {% endif %}>
+            <input class="reg-form__input" type="password" name="password" {% if password %} value="{{ password }}" {% else %} placeholder="Your password..." {% endif %}>
+
+            <input class="reg-form__button" type="submit" value="Login">
+        </form>
+
+
+        <div>
+            <p style="margin: 50px auto 0; color: #ff7f50;">Still do not have an account >>> <a href="{% url 'signup' %}" style="color: #ecc9c7;">Signup</a></p>
+        </div>
+    </div>
+{% endblock %}

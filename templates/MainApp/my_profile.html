@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+                <h1 class="profile-h1">Your Profile:</h1>
+
+                <form method="post" class="my-personal__info" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="user-profile__form">
+                        {% for message in messages %}
+                            <span class="profile-message">
+                                {{ message }}
+                            </span>
+                        {% endfor %}
+                        <div class="pic-and-meta">
+                            <div class="profile-avatar-block">
+                                <img for="avatar_id" class="profile-img" src="{{ profile.avatar.url }}">
+
+                                <input id="avatar_id" name="avatar" style="visibility: hidden;" type="file" accept="image/*">
+                                <label for="avatar_id" class="avatar-button__label">Change Picture</label>
+                            </div>
+
+                            <div class="profile-meta">
+                                <h2 style="font-size: 30px; color: #ff7f50; margin-top: -40px;">{{ request.user }}</h2>
+                                <h3 class="date-joined">Since {{ date_joined }}</h3>
+                                <h4>You have sent {{ sent }} mail{% if sent != 1 %}s{% endif %}</h4>
+                                <h4>You have received {{ received }} mail{% if received != 1 %}s{% endif %}</h4>
+                            </div>
+                        </div>
+
+                        <hr class="form-separator">
+
+                        <div class="input_info">
+                            <div class="contact-and-initials">
+                                <h3 class="contact-and-initials__h3" style="color: #ecc9c7; text-align: center; margin-bottom: 30px;">Your initials and meta:</h3>
+                                <ul class="contact-and-initials__list">
+                                    <li class="contact-and-initials__list-li">
+                                        <span>Your name >>></span>
+                                        <input type="text" name="name" class="user-data__span" {% if form.name.value %} value="{{ form.name.value }}" {% else %} placeholder="Name" {% endif %}>
+                                    </li>
+                                    <li class="contact-and-initials__list-li">
+                                        <span>Your surname   >>></span>
+                                        <input type="text" name="surname" class="user-data__span" {% if form.surname.value %} value="{{ form.surname.value }}" {% else %} placeholder="Surname" {% endif %}>
+                                    </li>
+                                    <li class="contact-and-initials__list-li">
+                                        <span>Your email >>></span>
+                                        <input type="email" name="email" class="user-data__span" {% if form.email.value %} value="{{ form.email.value }}" {% else %} placeholder="Email" {% endif %}>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="biography">
+                                <span class="biography-header">Anything about yourself:</span>
+                                {% if form.bio.value %}
+                                <textarea name="bio">{{ form.bio.value }}</textarea>
+                                {% else %}
+                                <textarea name="bio" placeholder="Write anything about yourself. Maximum - 1024 characters..."></textarea>
+                                {% endif %}
+                                <input type="submit" name="save" value="Save">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+{% endblock %}

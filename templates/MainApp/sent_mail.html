@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+    {% block content %}
+        <div class="ViewMail">
+
+        <h1 class="mail-view" style="color: #ecc9c7; margin-top: -20px; font-weight: 500;">Sent Mail</h1>
+
+        <div class="content">
+            <div class="view-mail__block">
+                <span>
+                    Sent to
+                    <br>
+                    <a href="{% url 'profile' mail.to_user_inf %}" class="mail-view__profile-link">@{{ mail.to_user_inf }} <img src="{{ avatar.url }}" class="mail-view__profile-pic"></a>
+                </span>
+            </div>
+
+            <div class="view-mail__block">
+                <span style="display: inline-block; font-size: 22px; text-align: left;">Title</span>
+                <br>
+                <span class="view-mail__block-title">{{ mail.title }}</span>
+            </div>
+
+            <div class="view-mail__block">
+                <span style="display: block; font-size: 22px; text-align: center;">Mail Text</span>
+                <textarea style="display: inline-block;" readonly>{{ mail.body }}</textarea>
+            </div>
+
+            <div class="view-mail__block" style="color: #ff7f50; border: none; text-align: center;">
+                Sent {{ mail.render_created }}
+            </div>
+        </div>
+
+        <div class="post-form">
+            <form method="POST">
+                {% csrf_token %}
+                <input class="MailForm__button-delete" type="submit" name="Delete" value="Delete">
+                <input class="MailForm__button-back1" type="submit" name="Back" value="Back">
+            </form>
+        </div>
+    </div>
+    {% endblock %}

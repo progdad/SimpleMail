@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .main-page {
+        padding: 50px 100px;
+        border: 2px solid #ff7f50;
+        border-radius: 25px;
+        background-color: #403133;
+    }
+
+    .main-page h1 {
+        color: #ecc9c7;
+        text-align: center;
+    }
+
+    .main-page h3, h4 {
+        color: #ecc9c7;
+        text-align: center;
+    }
+
+    .main-page__list {
+        list-style-type: circle;
+        padding: 20px;
+        border: 1px solid #ecc9c7;
+        border-radius: 10px;
+        background-color: #393133;
+    }
+
+    .main-page__li {
+        margin-left: 30px;
+        max-width: 700px;
+        color: #000;
+    }
+
+    .html-is-so-hard {
+        max-width: 730px;
+        margin: 30px auto;
+        padding: 30px;
+        border: 1px solid #ecc9c7;
+        border-radius: 10px;
+        background-color: #393133;
+    }
+
+    .main-page__li-meta {
+        margin: 0 0 10px 40px;
+        display: block;
+    }
+</style>
+
+<div class="main-page">
+    <h1 style="color: #ff7f50;">About Simple Mail</h1>
+    <p>
+        <h3>The name of this web application speaks for itself meaning.</h3>
+        <h4 style="font-size: 18px;">This is the noobiest mail service you've ever seen, but why not :)</h4>
+        <hr style="width: 60%; color: #ecc9c7; margin: 30px auto 50px;">
+
+        <ul class="main-page__list">
+            <h4 style="color: #ff7f50;">There are common actions you are able to do:</h4>
+            <li class="main-page__li">Send mails</li>
+            <li class="main-page__li">Receive mails</li>
+            <li class="main-page__li">
+                Read them and Delete them:
+                <small class="main-page__li-meta">
+                    If you want to delete any mail, it will be deleted only from your mails list !<br>
+                    Yes, there is no way to delete a mail from user mails list you are chatting with.
+                </small>
+            </li>
+            <li class="main-page__li">
+                Change your profile data:
+                <small class="main-page__li-meta">
+                    You can visit your profile and change its data just clicking on your profile picture on navigation bar.
+                    And the coolest possibility is change your profile picture.
+                </small>
+            </li>
+            <li class="main-page__li">
+                View other users profiles:
+                <small class="main-page__li-meta">
+                    Each mail, no matter, received or sent, has a nickname field of user you are chatting with.
+                    You can click on his nickname or profile picture, and you will be on his profile page.
+                </small>
+            </li>
+        </ul>
+
+        <p class="html-is-so-hard">
+            This application was created by a junior python developer, who is a true supporter of open source.
+            Ofc this is just a pet-project, but I am certainly satisfied of the result !<br>
+            So that i leave <a href="https://github.com/progdad/SimpleMail.git" target="_blank">here</a> this project github repository :)
+        </p>
+    </p>
+</div>
+
+{% endblock %}
