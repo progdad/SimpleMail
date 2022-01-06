@@ -10,8 +10,8 @@
                             <div class="profile-meta">
                                 <h2 style="font-size: 30px; color: #ff7f50;">{{ profile.user }}</h2>
                                 <h3 class="date-joined">Since {{ profile.joined }}</h3>
-                                <h4>{{ sent }} mail{% if sent != 1 %}s{% endif %} were sent</h4>
-                                <h4>{{ received }} mail{% if received != 1 %}s{% endif %} were received</h4>
+                                <h4>{{ sent }} mail{% if sent != 1 %}s were{% else %} was{% endif %} sent</h4>
+                                <h4>{{ received }} mail{% if received != 1 %}s were{% else %} was{% endif %} received</h4>
                             </div>
                         </div>
 
