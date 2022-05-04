@@ -7,7 +7,7 @@
                     <h1 class="mails-h1">No sent mails matched "{{ searched }}" search filter !</h1>
                 {% else %}
                     <h1 class="mails-h1">You don't have any sent mails :/</h1>
-                    <h3 style="color: #ecc9c7;">Write your first mail <a href="{% url 'send-mail' %}">HERE</a> :)</h3>
+                    <h3 style="color: #ecc9c7;">Write your first mail <a href="{% url 'send-mail' %}">HERE</a> </h3>
                 {% endif %}
             </div>
         {% else %}
@@ -27,7 +27,7 @@
 
                     <div class="mail-body">
                         <small class="chat-mate__info">
-                            <span>You sent it {{ mail.render_created }}</span>
+                            <span>You sent it {{ mail.render_field_created }}</span>
                         </small>
                         <br>
                         <hr style="width: 60%; margin: 20px auto 10px; color: darkgrey;">

@@ -1,7 +1,5 @@
 from django.contrib.auth.models import AnonymousUser
 from .views_settings import mails_counter
-from django.shortcuts import render
-from django.template import Context, Template
 from .models import Profile
 
 

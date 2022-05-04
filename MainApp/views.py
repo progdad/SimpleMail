@@ -6,174 +6,171 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.views import View
+from django.views.generic import ListView, DetailView, TemplateView
 
+from .mixins import LogInUserMixin, UnauthorizedUserMixin, DisplayMailsQueryMixin
 from .models import Mail, Profile
 from .forms import ProfileForm
-from .views_settings import valid_registration, mails_settings
 
 
-def home(request):
-    return render(request, 'home.html')
+class HomeView(TemplateView):
+    template_name = "home.html"
 
 
-def register(request):
-    if request.user.is_authenticated:
+class RegisterUserView(LogInUserMixin):
+    template_name = "signup.html"
+
+    def post(self, request, *args, **kwargs):
+        username, password1, password2 = super().get_user_auth_data(request, "username", "password1", "password2")
+
+        form_response = self._valid_registration(username, password1, password2)
+        if form_response != "Correct":
+            context_data = {
+                "register_error": form_response, "username": username,
+                "password1": password1, "password2": password2
+            }
+            return render(request, 'signup.html', context_data)
+
+        self._create_new_profile(request, username, password1)
         return redirect("all-received-mails")
 
-    if request.method == 'POST':        
-        username = request.POST.get("username").strip()
-        password1, password2 = request.POST.get("password1"), request.POST.get("password2")
-        form_response = valid_registration(username, password1, password2)
+    @staticmethod
+    def _valid_registration(username: str, password1: str, password2: str):
+        if not (username and password1 and password2):
+            return "Some fields are empty !"
+        if User.objects.filter(username=username):
+            return "This username is already taken !"
+        if not (4 <= len(username) <= 24):
+            return "Username can be only from 4 to 24 characters long !"
+        if not (username[0].isalpha() and username.isalnum()):
+            return "Incorrect username !"
+        if not ((password1 == password2) and (8 <= len(password1) <= 64)):
+            return "Passwords didn't match or incorrect password length !"
+        return "Correct"
 
-        if form_response == "Correct":  
-            user = User.objects.create_user(username=username, password=password1)
-            user.save()
-            login(request, user)
-            profile = Profile(user=user)
-            profile.save()
-            return redirect("all-received-mails")
-
-        new_data = {
-            "register_error": form_response,
-            "username": username,
-            "password1": password1,
-            "password2": password2 
-        }
-        return render(request, 'signup.html', new_data)
-
-    return render(request, 'signup.html')
+    @staticmethod
+    def _create_new_profile(request, username, password):
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
+        login(request, user)
+        profile = Profile(user=user)
+        profile.save()
 
 
-def log_in(request):
-    if request.user.is_authenticated:
-        return redirect("all-received-mails")
+class LoginUserView(LogInUserMixin):
+    template_name = "login.html"
 
-    if request.method == "POST":
-        username = request.POST.get("username").strip()
-        password = request.POST.get("password")
-
+    def post(self, request, *args, **kwargs):
+        username, password = super().get_user_auth_data(request, "username", "password")
         user = authenticate(username=username, password=password)
 
         if not user:
             context = {'username': username, 'password': password,
                        'login_error': 'Username or password are incorrect !'}
-
             return render(request, "login.html", context=context)
-
         else:
             login(request, user)
             return redirect('all-received-mails')
 
-    return render(request, "login.html")
 
+class LogoutUserView(UnauthorizedUserMixin):
 
-def log_out(request):
+    @staticmethod
+    def get(request, *args, **kwargs):
+        return render(request, "logout.html")
 
-    if not request.user.is_authenticated:
-        return redirect('login') 
-
-    if request.method == "POST":
+    @staticmethod
+    def post(request, *args, **kwargs):
         if request.POST.get("Logout"):
             logout(request)
             return redirect("login")
         return redirect("all-received-mails")
-    
-    return render(request, 'logout.html')    
 
 
-def new_mail(request):
+class SendMailView(UnauthorizedUserMixin):
+    template_name = "new_mail.html"
 
-    if not request.user.is_authenticated:
-        return redirect('login') 
-
-    if request.method == 'POST':
-        if request.POST.get("back"):
+    def post(self, request, *args, **kwargs):
+        self.request = request
+        if self.request.POST.get("back"):
             return redirect("all-sent-mails")
 
-        form = dict(request.POST.items())
+        all_data_validation_methods = [
+            self._check_if_not_all_fields_are_filled, self._check_if_recipient_exists,
+            self._check_if_sender_is_equal_to_recipient, self._check_if_mail_fields_are_too_long
+        ]
 
-        if all(form.values()):
-            new_mail = Mail()
-            from_user = User.objects.get(username=request.user)
-            
-            try:
-                to_user = User.objects.get(username=form["to_user"])
-            except ObjectDoesNotExist:
-                error = f"No such user - \"{form['to_user']}\""
-                context = {
-                    'form': form,
-                    'error': error
-                }
-                return render(request, 'new_mail.html', context)
+        self.form = dict(self.request.POST.items())
+        for validation_method in all_data_validation_methods:
+            error = validation_method()
+            if error:
+                return render(self.request, self.template_name, {"form": self.form, "error": error})
 
-            if from_user == to_user:
-                error = f"You are trying to send message to yourself !"
-                context = {
-                    'form': form,
-                    'error': error
-                }
-                return render(request, "new_mail.html", context)
-
-            new_mail.to_user = to_user
-            new_mail.from_user = request.user
-
-            new_mail.title = form["title"]
-            new_mail.body = form["body"]
-
-            new_mail.to_user_inf = form["to_user"]
-            new_mail.from_user_inf = str(request.user)
-            new_mail.save()
-
-            return redirect("all-sent-mails")
-
-        else:
-            error = "Looks like some fields are empty !"
-            context = {
-                'form': form,
-                'error': error
-            }
-            return render(request, 'new_mail.html', context)
-
-    return render(request, "new_mail.html")
-
-
-def all_sent_mails(request):
-
-    if not request.user.is_authenticated:
-        return redirect('login')
-
-    if request.GET.get("close") is not None:
+        self.save_and_send_mail()
         return redirect("all-sent-mails")
 
-    searched = request.GET.get("searched") if request.GET.get("searched") else ""
+    def _check_if_not_all_fields_are_filled(self):
+        if not all(self.form.values()):
+            return "Looks like some fields are empty !"
 
-    full_url = request.build_absolute_uri()
-    if "searched=&submit=" in full_url:
-        redirect_url = full_url.replace("?searched=&submit=", '')
-        return redirect(redirect_url)
-
-    elif searched:
-        mails = Mail.objects.filter(from_user=request.user).filter(
-            Q(to_user__username__icontains=searched) |
-            Q(title__icontains=searched)
-            )
-    else:
-        mails = Mail.objects.filter(from_user=request.user)
-
-    profile_pictures = []
-    for mail in mails:
-        user = User.objects.get(username=mail.to_user_inf)
+    def _check_if_recipient_exists(self):
         try:
-            avatar = Profile.objects.get(user=user).avatar
+            self.to_user = User.objects.get(username=self.form["to_user"])
         except ObjectDoesNotExist:
-            profile = Profile(user=user)
-            profile.save()
-            avatar = Profile.objects.get(user=user).avatar
-        profile_pictures.append(avatar)
+            return f"No such user - \"{self.form['to_user']}\""
 
-    context = mails_settings(request=request, user="to_user_inf", mails=mails)
+    def _check_if_sender_is_equal_to_recipient(self):
+        self.from_user = User.objects.get(username=self.request.user)
+        if self.from_user == self.to_user:
+            return "You are trying to send mail to yourself !"
 
-    return render(request, "sent_mails.html", context=context)
+    def _check_if_mail_fields_are_too_long(self):
+        title_length = len(self.form["title"])
+        body_length = len(self.form["body"])
+        if title_length > 64:
+            return f"The title is too long. Now it's {title_length}, but maximum size is 64 characters"
+        if body_length > 1000:
+            return f"Your text message is too big. Now it's {body_length}, but maximum size is 1000 characters"
+
+    def save_and_send_mail(self):
+        new_mail = Mail()
+        new_mail.to_user = self.to_user
+        new_mail.from_user = self.from_user
+        new_mail.title = self.form["title"]
+        new_mail.body = self.form["body"]
+        new_mail.to_user_inf = self.to_user.username
+        new_mail.from_user_inf = self.from_user.username
+        new_mail.save()
+
+
+class AllSentMailsView(DisplayMailsQueryMixin):
+    template_name = "sent_mails.html"
+    redirect_url = "all-sent-mails"
+    user = "to_user_inf"
+
+    def _render_query_with_all_mails(self):
+        super()._render_query_with_all_mails()
+        if self.searched:
+            return Mail.objects.filter(from_user=self.request.user).filter(
+                Q(to_user__username__icontains=self.searched) | Q(title__icontains=self.searched))
+        else:
+            return Mail.objects.filter(from_user=self.request.user)
+
+
+class AllReceivedMailsView(DisplayMailsQueryMixin):
+    template_name = "received_mails.html"
+    redirect_url = "all-received-mails"
+    user = "from_user_inf"
+
+    def _render_query_with_all_mails(self):
+        super()._render_query_with_all_mails()
+        if self.searched:
+            return Mail.objects.filter(to_user=self.request.user).filter(
+                Q(from_user__username__icontains=self.searched) | Q(title__icontains=self.searched))
+        else:
+            return Mail.objects.filter(to_user=self.request.user)
+
 
 
 def sent_mail(request, pk):
@@ -183,6 +180,7 @@ def sent_mail(request, pk):
 
     try:
         mail = Mail.objects.get(id=pk)
+        print(mail.created)
     except ObjectDoesNotExist:
         return redirect("all-sent-mails")
 
@@ -205,36 +203,6 @@ def sent_mail(request, pk):
     
     context = {"mail": mail, "avatar": avatar}
     return render(request, "sent_mail.html", context=context)
-
-
-def all_received_mails(request):
-
-    if not request.user.is_authenticated:
-        return redirect('login')
-
-    if request.GET.get("close") is not None:
-        return redirect("all-received-mails")
-
-    full_url = request.build_absolute_uri()
-    if "searched=&submit=" in full_url:
-        redirect_url = full_url.replace("?searched=&submit=", '')
-        return redirect(redirect_url)
-
-    searched = request.GET.get("searched") if request.GET.get("searched") else ""
-
-    if searched.lower() == "all":
-        return redirect("all-received-mails")
-
-    elif searched:
-        mails = Mail.objects.filter(to_user=request.user).filter(
-            Q(from_user__username__icontains=searched) |
-            Q(title__icontains=searched)
-            )
-    else:
-        mails = Mail.objects.filter(to_user=request.user)
-    
-    context = mails_settings(request=request, user="from_user_inf", mails=mails)
-    return render(request, "received_mails.html", context=context)
 
 
 def received_mail(request, pk):
@@ -278,7 +246,7 @@ def my_profile(request):
 
     try:
         my_profile_var = Profile.objects.get(user=request.user)
-    except ObjectDoesNotExist:  # another one handler bacause of a superuser which profile will be created by code below
+    except ObjectDoesNotExist:  # another one handler because of a superuser which profile will be created by the code below
         profile = Profile(user=request.user)
         profile.save()
         my_profile_var = Profile.objects.get(user=request.user)
@@ -290,7 +258,7 @@ def my_profile(request):
         "profile": my_profile_var,
         "sent": sent_messages, 
         "received": received_messages,
-        "date_joined": my_profile_var.joined
+        "date_joined": my_profile_var
     }
     if request.method == 'POST':
         form = ProfileForm(
@@ -333,10 +301,6 @@ def user_profile(request, username):
         return redirect("all-received-mails")
 
 
-# Error handlers
-# Error handlers
-# Error handlers
-# Error handlers
 # Error handlers
 
 
