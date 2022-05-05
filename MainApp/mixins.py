@@ -2,6 +2,7 @@ from abc import abstractmethod
 from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.forms.utils import to_current_timezone
 from django.shortcuts import redirect, render
@@ -13,11 +14,9 @@ from .models import Mail, Profile
 
 
 class UnauthorizedUserMixin(View):
-    redirect_url = "login"
-
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect(self.redirect_url)
+            return redirect("login")
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -53,17 +52,25 @@ class MailCreationDatetimeMixin:
         return to_current_timezone(mail.created).strftime("%d %B, %Y at %H:%M")
 
 
-class DisplayMailsQueryMixin(UnauthorizedUserMixin, MailCreationDatetimeMixin):
+class DisplayMailsQueryMixin(View, MailCreationDatetimeMixin):
     template_name = None
     redirect_url = None
     user = None
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login")
+
+        if request.GET.get("close") is not None:
+            return redirect(self.redirect_url)
+
+        full_url = request.build_absolute_uri()
+        if "searched=&submit=" in full_url:
+            return redirect(full_url.replace("?searched=&submit=", ''))
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         self.request = request
-
-        any_redirection_checkpoint = self._perform_checkpoints()
-        if any_redirection_checkpoint:
-            return redirect(any_redirection_checkpoint)
 
         all_mails_or_empty_query = self._render_query_with_all_mails()
         all_zipped_mail_queries = self._set_necessary_data_for_query_context(all_mails_or_empty_query)
@@ -71,14 +78,6 @@ class DisplayMailsQueryMixin(UnauthorizedUserMixin, MailCreationDatetimeMixin):
 
         context = {**current_page_5_mails_query, "searched": self.searched}
         return render(self.request, self.template_name, context)
-
-    def _perform_checkpoints(self):
-        if self.request.GET.get("close") is not None:
-            return self.redirect_url
-
-        full_url = self.request.build_absolute_uri()
-        if "searched=&submit=" in full_url:
-            return full_url.replace("?searched=&submit=", '')
 
     @abstractmethod
     def _render_query_with_all_mails(self):
@@ -88,7 +87,7 @@ class DisplayMailsQueryMixin(UnauthorizedUserMixin, MailCreationDatetimeMixin):
         profile_pictures = []
         for mail in mails:
             mail.render_field_created = self.render_field_created(mail)
-            username = User.objects.get(username=eval(f"mail.{self.user}"))
+            username = User.objects.get(username=getattr(mail, self.user))
             avatar = Profile.objects.get(user=username).avatar
             profile_pictures.append(avatar)
         return list(zip(mails, profile_pictures))
@@ -98,6 +97,51 @@ class DisplayMailsQueryMixin(UnauthorizedUserMixin, MailCreationDatetimeMixin):
         paginator = Paginator(mails, 5)
         current_query = paginator.get_page(current_page_number)
         return {"mails": current_query, "flag": True}
+
+
+class VisitMailMixin(View, MailCreationDatetimeMixin):
+    template_name = None
+    redirect_url = None
+    user = None
+    participant_inf = None
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login")
+
+        pk = kwargs.get("pk", -1)
+        self.mail = self._try_to_get_current_mail_object(pk)
+        if not self.mail:
+            return redirect(self.redirect_url)
+
+        if getattr(self.mail, self.user) != self.request.user:
+            return redirect(self.redirect_url)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        username = getattr(self.mail, self.participant_inf)
+        user = User.objects.get(username=username)
+        try:
+            avatar = Profile.objects.get(user=user).avatar
+        except ObjectDoesNotExist:
+            profile = Profile(user=user)
+            profile.save()
+            avatar = Profile.objects.get(user=user).avatar
+
+        self.mail.render_field_created = self.render_field_created(self.mail)
+        context = {"mail": self.mail, "avatar": avatar}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get("Delete"):
+            setattr(self.mail, self.user, None)
+            self.mail.save()
+        return redirect(self.redirect_url)
+
+    @staticmethod
+    @abstractmethod
+    def _try_to_get_current_mail_object(pk):
+        pass
 
 
 class ProfileDatetimeCreationMixin:

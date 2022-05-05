@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'SimpleMailProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'userapi',
+        'NAME': 'simplemail',
         'USER': 'postgres',
         'PASSWORD': 'idivzhopu',
         'HOST': 'localhost',

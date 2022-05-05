@@ -20,10 +20,10 @@ urlpatterns = [
     path('new-mail/', SendMailView.as_view(), name="send-mail"),
 
     path('sent-mails/', AllSentMailsView.as_view(), name='all-sent-mails'),
-    path('sent-mail/<str:pk>/', sent_mail, name='sent-mail'),
+    path('sent-mail/<str:pk>/', SentMailView.as_view(), name='sent-mail'),
     
     path('received-mails/', AllReceivedMailsView.as_view(), name='all-received-mails'),
-    path('received-mail/<str:pk>/', received_mail, name='received-mail'),
+    path('received-mail/<str:pk>/', ReceivedMailView.as_view(), name='received-mail'),
 ]
 
 handler404 = "MainApp.views.handler_404"
