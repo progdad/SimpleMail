@@ -23,7 +23,7 @@
 
                             <div class="profile-meta">
                                 <h2 style="font-size: 30px; color: #ff7f50; margin-top: -40px;">{{ request.user }}</h2>
-                                <h3 class="date-joined">Since {{ date_joined }}</h3>
+                                <h3 class="date-joined">Since {{ profile.joined }}</h3>
                                 <h4>You have sent {{ sent }} mail{% if sent != 1 %}s{% endif %}</h4>
                                 <h4>You have received {{ received }} mail{% if received != 1 %}s{% endif %}</h4>
                             </div>

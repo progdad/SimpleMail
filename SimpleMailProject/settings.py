@@ -71,7 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'MainApp.sidebar_processor.sidebar_mails'
+                'MainApp.context_processor.sidebar_and_avatar'
             ],
         },
     },
