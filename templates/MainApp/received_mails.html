@@ -11,7 +11,11 @@
             </h1>
         {% else %}
            <h1 class="mails-h1">
-                Received mails
+                {% if searched %}
+                    Received mails with "{{searched}}" text-filter
+                {% else %}
+                    All received mails
+                {% endif %}
 
                 {% if mails.paginator.page_range|length > 1 %}
                     page {{ mails.number }}
