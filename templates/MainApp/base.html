@@ -20,6 +20,13 @@
         <section class="section">
             <div class="content-base">
                 {% if request.user.is_authenticated %}
+                    <style>
+                        .sidebar li h3 {
+                            font-weight: 400;
+                            margin: 5px;
+                            color: #ecc9c7;
+                        }
+                    </style>
                     <div class="sidebar">
                         <ul>
                             <li class="new-mail" onclick="location.href='{% url "send-mail" %}';" style="cursor: pointer;">
@@ -28,7 +35,7 @@
 
                             <li class="received-mails" onclick="location.href='{% url "all-received-mails" %}';">
                                 <div class="received-mails__general">
-                                    <h3>
+                                    <h3 >
                                         Rec. Mails <span class="received-mails__counter">{{ received_mails_counter }}</span>
                                     </h3>
                                     {% if unvisited_mails_counter %}

@@ -11,7 +11,11 @@
             </h1>
         {% else %}
            <h1 class="mails-h1">
-                Received mails
+                {% if searched %}
+                    Received mails with "{{searched}}" text-filter
+                {% else %}
+                    All received mails
+                {% endif %}
 
                 {% if mails.paginator.page_range|length > 1 %}
                     page {{ mails.number }}
@@ -28,7 +32,7 @@
 
                     <div class="mail-body">
                         <small class="chat-mate__info">
-                            <span>You received it {{ mail.render_created }}</span>
+                            <span>You received it {{ mail.render_field_created }}</span>
                         </small>
                         <br>
                         <hr style="width: 60%; margin: 20px auto 10px; color: darkgrey;">

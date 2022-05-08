@@ -3,26 +3,24 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from . import views
+from .views import *
 
 
 urlpatterns = [
-    path('', views.home, name="home"),
+    path('', home, name="home"),
 
-    path('signup/', views.register, name='signup'),
-    path('login/', views.log_in, name='login', ),
-    path('logout/', views.log_out, name='logout'),
+    path('signup/', registration, name='signup'),
+    path('login/', login_view, name='login', ),
+    path('logout/', logout_view, name='logout'),
 
-    path('my-profile', views.my_profile, name='my-profile'),
-    path('profile/<str:username>/', views.user_profile, name='profile'),
+    path('new-mail/', send_mail, name="send-mail"),
+    path('sent-mails/', sent_mails, name='all-sent-mails'),
+    path('received-mails/', received_mails, name='all-received-mails'),
+    path('sent-mail/<str:pk>/', sent_mail, name='sent-mail'),
+    path('received-mail/<str:pk>/', received_mail, name='received-mail'),
 
-    path('new-mail/', views.new_mail, name="send-mail"),
-
-    path('sent-mails/', views.all_sent_mails, name='all-sent-mails'),
-    path('sent-mail/<str:pk>/', views.sent_mail, name='sent-mail'),
-    
-    path('received-mails/', views.all_received_mails, name='all-received-mails'),
-    path('received-mail/<str:pk>/', views.received_mail, name='received-mail'),
+    path('my-profile', my_profile, name='my-profile'),
+    path('profile/<str:username>/', user_profile, name='profile'),
 ]
 
 handler404 = "MainApp.views.handler_404"

@@ -31,7 +31,7 @@
     .main-page__li {
         margin-left: 30px;
         max-width: 700px;
-        color: #000;
+        color: #ecc9c7;
     }
 
     .html-is-so-hard {
@@ -41,6 +41,7 @@
         border: 1px solid #ecc9c7;
         border-radius: 10px;
         background-color: #393133;
+        color: #ecc9c7;
     }
 
     .main-page__li-meta {
@@ -52,43 +53,37 @@
 <div class="main-page">
     <h1 style="color: #ff7f50;">About Simple Mail</h1>
     <p>
-        <h3>The name of this web application speaks for itself meaning.</h3>
-        <h4 style="font-size: 18px;">This is the noobiest mail service you've ever seen, but why not :)</h4>
+        <h3>The name of this web application speaks for itself meaning</h3>
+        <h4 style="font-size: 18px;">This is a very simple service that is something between mail and social medias</h4>
         <hr style="width: 60%; color: #ecc9c7; margin: 30px auto 50px;">
 
         <ul class="main-page__list">
-            <h4 style="color: #ff7f50;">There are common actions you are able to do:</h4>
-            <li class="main-page__li">Send mails</li>
-            <li class="main-page__li">Receive mails</li>
-            <li class="main-page__li">Also you can paginate mails. Pagination is divided on 5 mails on each page</li>
+            <h4 style="color: #ff7f50;">There are common rules and actions you can do:</h4>
             <li class="main-page__li">
-                Read them and Delete them:
+                At first you have to register your account <a href="{% url 'signup' %}">here</a>
                 <small class="main-page__li-meta">
-                    If you want to delete any mail, it will be deleted only from your mails list !<br>
-                    There is no way to delete a mail from user mails list you are chatting with.
+                    Otherwise you can't do anything, even visit users profiles.
                 </small>
             </li>
             <li class="main-page__li">
-                Change your profile data:
+                Send, receive, delete and sort mails:
                 <small class="main-page__li-meta">
-                    You can go to your profile page and change its data just clicking on your profile picture on navigation bar.
-                    And the coolest possibility is to change your profile picture. But a picture that you are uploading will be saved
-                    only for a one session, because of heroku.
+                    When you delete mail, it is being deleted only from your account.<br>
+                    Sorting mails displays matches in usernames(users you are chatting with) and titles.
                 </small>
             </li>
             <li class="main-page__li">
-                View other users profiles:
+                Set your profile data and visit other users profiles.
                 <small class="main-page__li-meta">
-                    Each mail, no matter, received or sent, has a nickname field of user you are chatting with.
-                    You can click on his nickname or profile picture, and you will be redirected on his profile page.
+                    Check your profile <a href="{% url 'my-profile' %}">here</a>.
                 </small>
             </li>
         </ul>
 
         <p class="html-is-so-hard">
-            This application was created by a junior python developer, who is a true supporter of open source code.
-            Ofc this is just a pet-project, but I am certainly satisfied of the result !<br>
-            So that i leave <a href="https://github.com/progdad/SimpleMail.git" target="_blank">here</a> this project github repository :)
+            This application was created by a junior python developer just as a pet-project
+            to show my skill and do an interesting practice. <br><br>
+            <a href="https://github.com/progdad/SimpleMail.git" target="_blank">Here</a> is this application source code.
         </p>
     </p>
 </div>
