@@ -1,5 +1,6 @@
 from pathlib import Path
-#import dj_database_url
+import dj_database_url
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,7 +42,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'templates/MainApp',
+            BASE_DIR / 'MainApp/templates',
             ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -88,7 +89,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'ru'
+
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 

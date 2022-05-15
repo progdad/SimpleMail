@@ -34,7 +34,7 @@
         color: #ecc9c7;
     }
 
-    .html-is-so-hard {
+    .just-a-p{
         max-width: 730px;
         margin: 30px auto;
         padding: 30px;
@@ -78,9 +78,16 @@
                     Check your profile <a href="{% url 'my-profile' %}">here</a>.
                 </small>
             </li>
+            <li class="main-page__li">
+                {% if request.user.is_authenticated %}
+                    Also you can test this app API <a href="{% url 'home' %}api">here</a>.
+                {% else %}
+                    This app has its own API, so after being registered you can simply use it.
+                {% endif %}
+            </li>
         </ul>
 
-        <p class="html-is-so-hard">
+        <p class="just-a-p">
             This application was created by a junior python developer just as a pet-project
             to show my skill and do an interesting practice. <br><br>
             <a href="https://github.com/progdad/SimpleMail.git" target="_blank">Here</a> is this application source code.
