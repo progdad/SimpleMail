@@ -25,7 +25,7 @@
             {% for mail, image in mails %}
                 <div class="mail-block" onclick="location.href='{% url "sent-mail" mail.id %}';" style="cursor: pointer;">
                     <h4>
-                        {{ mail.title|truncatewords:25 }}
+                        {{ mail.title|truncatechars:30 }}
                     </h4>
 
                     <div class="mail-body">

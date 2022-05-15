@@ -27,7 +27,7 @@
                         {% if mail.unvisited %}
                             <small class="new-mail">*new</small>
                         {% endif %}
-                        {{ mail.title|truncatewords:25 }}
+                        {{ mail.title|truncatechars:30 }}
                     </h4>
 
                     <div class="mail-body">
