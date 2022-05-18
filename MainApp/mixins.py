@@ -157,6 +157,7 @@ class VisitMailMixin(View, MailDatetimeCreationMixin):
 
 
 class GetProfileContextMixin(View, DatetimeCreationMixin):
+    @abstractmethod
     def dispatch(self, request, user=None, **kwargs):
         try:
             context = self._get_user_info_and_create_context(user)
