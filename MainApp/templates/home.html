@@ -1,98 +1,112 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <style>
-    .main-page {
-        padding: 50px 100px;
-        border: 2px solid #ff7f50;
-        border-radius: 25px;
-        background-color: #403133;
-    }
+    
+.main-page {
+    padding: 50px 100px;
+    border: 2px solid #ff7f50;
+    border-radius: 25px;
+    background-color: #403133;
+}
 
-    .main-page h1 {
-        color: #ecc9c7;
-        text-align: center;
-    }
+h1, h2, h3 {
+    color: #ff7f50;
+    text-align: center;
+}
 
-    .main-page h3, h4 {
-        color: #ecc9c7;
-        text-align: center;
-    }
+h4 {
+    text-align: center;
+    font-size: 18px;
+    color: #ecc9c7;
+}
 
-    .main-page__list {
-        list-style-type: circle;
-        padding: 20px;
-        border: 1px solid #ecc9c7;
-        border-radius: 10px;
-        background-color: #393133;
-    }
+hr {
+    width: 60%;
+    color: #ecc9c7;
+    margin: 30px auto 50px;
+}
 
-    .main-page__li {
-        margin-left: 30px;
-        max-width: 700px;
-        color: #ecc9c7;
-    }
+.main-page__list {
+    list-style-type: circle;
+    padding: 20px;
+    border: 1px solid #ecc9c7;
+    border-radius: 10px;
+    background-color: #393133;
+}
 
-    .just-a-p{
-        max-width: 730px;
-        margin: 30px auto;
-        padding: 30px;
-        border: 1px solid #ecc9c7;
-        border-radius: 10px;
-        background-color: #393133;
-        color: #ecc9c7;
-    }
+.main-page__li {
+    margin-left: 30px;
+    max-width: 700px;
+    color: #ecc9c7;
+}
 
-    .main-page__li-meta {
-        margin: 0 0 10px 40px;
-        display: block;
-    }
+.main-page__li-meta {
+    margin: 0 0 10px 40px;
+    display: block;
+}
+
+.source-code-link {
+    max-width: 730px;
+    margin: 30px auto;
+    padding: 10px 30px;
+    border: 1px solid #ecc9c7;
+    border-radius: 10px;
+    background-color: #393133;
+    color: #ecc9c7;
+}
 </style>
 
 <div class="main-page">
-    <h1 style="color: #ff7f50;">About Simple Mail</h1>
+    <h1>Simple Mail</h1>
     <p>
-        <h3>The name of this web application speaks for itself meaning</h3>
-        <h4 style="font-size: 18px;">This is a very simple service that is something between mail and social medias</h4>
-        <hr style="width: 60%; color: #ecc9c7; margin: 30px auto 50px;">
-
+        <h4>
+            Simple Mail is a basic web application created as a personal project to practice Python programming skills.
+            It's a minimalistic platform that combines email-like functionality with a hint of social interaction.
+        </h4>
+        <hr>
         <ul class="main-page__list">
-            <h4 style="color: #ff7f50;">There are common rules and actions you can do:</h4>
+            <h2>Features</h2>
             <li class="main-page__li">
-                At first you have to register your account <a href="{% url 'signup' %}">here</a>
+                User Registration
                 <small class="main-page__li-meta">
-                    Otherwise you can't do anything, even visit users profiles.
+                    To explore this app, you need to create an account.
+                    {% if not request.user.is_authenticated %}
+                    <a href="{% url 'signup' %}">Sign Up Here!</a>
+                    {% endif %}
+                    <br>
+                    Without registration, you won't be able to view user profiles or send messages.
                 </small>
             </li>
             <li class="main-page__li">
-                Send, receive, delete and sort mails:
+                Email Management
                 <small class="main-page__li-meta">
-                    When you delete mail, it is being deleted only from your account.<br>
-                    Sorting mails displays matches in usernames(users you are chatting with) and titles.
+                    You can send, receive, delete, and sort your emails.
+                    <br>
+                    Please note that deleting a message removes it from your account only. Sorting emails allows you to find messages by users and titles.
                 </small>
             </li>
             <li class="main-page__li">
-                Set your profile data and visit other users profiles.
+                User profiles
                 <small class="main-page__li-meta">
+                    Customize your profile with your own information and visit other users' profiles to connect with fellow users.
+                    <br>
+                    {% if request.user.is_authenticated %}
                     Check your profile <a href="{% url 'my-profile' %}">here</a>.
+                    {% else %}
+                    To view your profile, please sign in <a href="{% url 'login' %}">here!</a>
+                    {% endif %}
                 </small>
-            </li>
-            <li class="main-page__li">
-                {% if request.user.is_authenticated %}
-                    Also you can test this app API <a href="{% url 'home' %}api">here</a>.
-                {% else %}
-                    This app has its own API, so after being registered you can simply use it.
-                {% endif %}
             </li>
         </ul>
 
-        <p class="just-a-p">
-            This application was created by a junior python developer just as a pet-project
-            to show my skill and do an interesting practice. <br><br>
-            <a href="https://github.com/progdad/SimpleMail.git" target="_blank">Here</a> is this application source code.
-        </p>
+        <div class="source-code-link">
+            <h3>Source Code</h3>
+            <h4>
+                For those curious about the inner workings of Simple Mail, the source code is available
+                <a href="https://github.com/progdad/SimpleMail.git" target="_blank">here</a>.
+            </h4>
+        </div>
     </p>
 </div>
-
 {% endblock %}
